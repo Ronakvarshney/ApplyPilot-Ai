@@ -1,0 +1,35 @@
+                Job URL / PDF / LinkedIn
+                          │
+                          ▼
+                  Planner Agent
+                          │
+                          ▼
+                 Extractor Agent
+                          │
+          ┌───────────────┴───────────────┐
+          │                               │
+          ▼                               ▼
+ Structured Job Data               Job Embedding
+          │                               │
+          └───────────────┬───────────────┘
+                          ▼
+               Semantic Resume Search
+                  (Postgres + pgvector)
+                          │
+                          ▼
+                Top K Matching Resumes
+                          │
+                          ▼
+                  Analyzer Agent
+                          │
+                          ▼
+                 Human Approval
+                          │
+                          ▼
+                Email Writing Agent
+                          │
+                          ▼
+                 Human Approval
+                          │
+                          ▼
+                 Gmail Sending Agent
