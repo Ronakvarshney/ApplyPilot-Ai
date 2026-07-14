@@ -1,6 +1,8 @@
 from typing_extensions import TypedDict , Annotated 
 from langchain_core.messages import BaseMessage
 from langgraph.graph import add_messages
+from pydantic import BaseModel
+from typing import List , Optional
 
 class ResumeInfo(TypedDict):
     id : str 
@@ -9,13 +11,21 @@ class ResumeInfo(TypedDict):
     summary : str 
     skills : str 
     
-class JobInfo(TypedDict):
-    job_description: str
-    company: str
+class JDExtraction(BaseModel):
+    company: Optional[str] = None
     role: str
-    skills: list[str]
-    experience: str
-    recruiter_email: str
+    location: Optional[str] = None
+    employment_type: Optional[str] = None
+    experience: Optional[str] = None
+    skills: List[str] = []
+    education: Optional[str] = None
+    responsibilities: List[str] = []
+    preferred_skills: List[str] = []
+    recruiter_email: Optional[str] = None
+    application_deadline: Optional[str] = None
+    salary: Optional[str] = None
+    search_summary: str
+
     
 class AnalyseState(TypedDict):
     matches : list[str]
@@ -33,7 +43,7 @@ class MailState(TypedDict):
 class JobApplicationState(TypedDict):
 
     source: str
-    job: JobInfo
+    job: JDExtraction
     candidates_resume : list[ResumeInfo]
     selected_resume: ResumeInfo
     analysis: AnalyseState

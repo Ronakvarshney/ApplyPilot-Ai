@@ -1,6 +1,8 @@
 import streamlit as st 
 import os 
 from resume_ingestion.ingestion import insert_resume
+from app.agents.extractor_agent import loadJd
+from app.graph.states import JDExtraction
 
 
 with st.sidebar:
@@ -24,6 +26,7 @@ with st.sidebar:
         path = os.path.join("uploads" , jdfile.name)
         with open(path , "wb") as f:
             f.write(jdfile.getbuffer())
+        loadJd(path , JDExtraction )
         
         st.success("Jd upload successfully")
         
