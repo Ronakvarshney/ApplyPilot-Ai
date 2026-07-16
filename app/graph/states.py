@@ -26,12 +26,11 @@ class JDExtraction(BaseModel):
     salary: Optional[str] = None
     search_summary: str
 
-    
-class AnalyseState(TypedDict):
-    matches : list[str]
-    missings : list[str]
-    ats_score : float
-    recommendations : str 
+class AnalysisResponse(BaseModel):
+    matches: list[str]
+    missings: list[str]
+    ats_score: float
+    recommendations: str 
     
 class MailState(TypedDict):
     receiver: str
@@ -46,7 +45,7 @@ class JobApplicationState(TypedDict):
     job: JDExtraction
     candidates_resume : list[ResumeInfo]
     selected_resume: ResumeInfo
-    analysis: AnalyseState
+    analysis: AnalysisResponse
     mail: MailState
     approved_mailcreation: bool
     approved_mailsend: bool

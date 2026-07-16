@@ -2,34 +2,10 @@ import streamlit as st
 import os 
 from resume_ingestion.ingestion import insert_resume
 from app.agents.extractor_agent import loadJd
-from app.graph.states import JDExtraction
+from app.graph.builder import chatbot
 
 
-with st.sidebar:
-    st.title("Upload your resume and JD")
-    
-    st.subheader("Resume Upload....")
-    resumefile = st.file_uploader("Upload your resume file")
-    if resumefile:
-        path = os.path.join('uploads' , resumefile.name)
-        with open(path , "wb") as f :
-            f.write(resumefile.getbuffer())
-        
-        st.success("Upload successfully")
-        insert_resume(resumefile.name , path)
-       
-    
-    
-    st.header("Upload your JD")
-    jdfile = st.file_uploader("Upload file")
-    if jdfile:
-        path = os.path.join("uploads" , jdfile.name)
-        with open(path , "wb") as f:
-            f.write(jdfile.getbuffer())
-        loadJd(path , JDExtraction )
-        
-        st.success("Jd upload successfully")
-        
+
 
 if "welcome_shown" not in st.session_state:
     with st.chat_message("assistant"):
@@ -53,3 +29,52 @@ I'll:
 
 
 st.chat_input("Here start by uploading your JD nd Resume")
+
+
+with st.sidebar:
+    st.title("Upload your resume and JD")
+    
+    st.subheader("Resume Upload....")
+    resumefile = st.file_uploader("Upload your resume file")
+    if resumefile:
+        path = os.path.join('uploads' , resumefile.name)
+        with open(path , "wb") as f :
+            f.write(resumefile.getbuffer())
+        
+        st.success("Upload successfully")
+        insert_resume(resumefile.name , path)
+        
+       
+    
+    
+    st.header("Upload your JD")
+    jdfile = st.file_uploader("Upload file")
+if jdfile:
+    path = os.path.join("uploads", jdfile.name)
+    with open(path, "wb") as f:
+        f.write(jdfile.getbuffer())
+
+    result = chatbot.invoke({
+        "source": path
+    })
+
+    st.success("JD uploaded successfully")
+    # print(type(result["analysis"]))
+    # print(result["analysis"])
+    
+    analysis = result['analysis']
+
+    with st.chat_message("assistant"):
+        st.markdown("## 📊 Resume Analysis")
+        st.write(f"**ATS Score:** {analysis.ats_score}")
+
+        st.write("### ✅ Matching Skills")
+        for skill in analysis.matches:
+            st.write(f"- {skill}")
+
+        st.write("### ❌ Missing Skills")
+        for skill in analysis.missings:
+            st.write(f"- {skill}")
+
+        st.write("### 💡 Recommendations")
+        st.write(analysis.recommendations)

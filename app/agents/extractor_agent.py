@@ -1,15 +1,18 @@
 from app.prompts.extractor_prompt import EXTRACTOR_PROMPT
-from langchain_community.document_loaders import PyPDFLoader
 from langchain_groq import ChatGroq
 import os
 from dotenv import load_dotenv
-from app.graph.states import JDExtraction
+from app.graph.states import JDExtraction , JobApplicationState
+from app.graph.loader import load_pdf
+from app.agents.matcher_agent import Semantic_search
 
 load_dotenv()
 
-def loadJd(path , state : JDExtraction):
-    loader = PyPDFLoader(path)
-    docs = loader.load()
+def loadJd(state : JobApplicationState):
+    path = state['source']
+    
+    docs = load_pdf(path)
+ 
     text = "\n\n".join(doc.page_content for doc in docs)
 
     llm = ChatGroq(
@@ -20,22 +23,9 @@ def loadJd(path , state : JDExtraction):
 
     prompt = EXTRACTOR_PROMPT.format(description=text)
     structured_llm = llm.with_structured_output(JDExtraction)
-    response = structured_llm.invoke(prompt)
-    content = response.model_dump()
-
-    state.company = content["company"]
-    state.role = content["role"]
-    state.location = content["location"]
-    state.employment_type = content["employment_type"]
-    state.experience = content["experience"]
-    state.skills = content["skills"]
-    state.education = content["education"]
-    state.responsibilities = content["responsibilities"]
-    state.preferred_skills = content["preferred_skills"]
-    state.recruiter_email = content["recruiter_email"]
-    state.application_deadline = content["application_deadline"]
-    state.salary = content["salary"]
-    state.search_summary = content["search_summary"]
-    return state
+    response = structured_llm.invoke(prompt)    
+    return {
+        'job' : response
+    }
 
 

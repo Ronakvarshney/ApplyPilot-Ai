@@ -74,7 +74,7 @@ salary:
 Search Summary
 =========================
 
-Generate a concise professional summary (2-4 sentences) describing the ideal candidate.
+Generate a detailed professional summary describing the ideal candidate.
 
 The summary should include:
 
@@ -82,6 +82,10 @@ The summary should include:
 - Experience
 - Primary technologies
 - Responsibilities
+- employment_type 
+- skills 
+- education
+- salary
 
 This summary will later be converted into an embedding for semantic resume retrieval.
 
