@@ -17,17 +17,16 @@ load_dotenv()
 def Semantic_search(state :JobApplicationState ):
     resume = get_resume()
     print(resume[0])  
-    job = state['job']
     search_summary = state["job"].search_summary
-    company = state['job'].company
-    role = state['job'].role
-    location = state['job'].location
-    employment_type = state['job'].employment_type
-    experience = state['job'].experience
-    skills = state['job'].skills
-    education = state['job'].education
-    responsibilities = state['job'].responsibilities
-    preferred_skills = state['job'].preferred_skills
+    # company = state['job'].company
+    # role = state['job'].role
+    # location = state['job'].location
+    # employment_type = state['job'].employment_type
+    # experience = state['job'].experience
+    # skills = state['job'].skills
+    # education = state['job'].education
+    # responsibilities = state['job'].responsibilities
+    # preferred_skills = state['job'].preferred_skills
     
     
     if search_summary : 
@@ -53,15 +52,6 @@ def Semantic_search(state :JobApplicationState ):
     print(resume_context)
     
     prompt = MATCHER_PROMPT.format(
-    company=company,
-    role=role,
-    location=location,
-    employment_type=employment_type,
-    experience=experience,
-    skills=", ".join(skills),
-    preferred_skills=", ".join(preferred_skills),
-    responsibilities="\n".join(responsibilities),
-    education=education,
     search_summary=search_summary,
     resume_context=resume_context,
     )

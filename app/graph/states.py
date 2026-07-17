@@ -25,12 +25,17 @@ class JDExtraction(BaseModel):
     application_deadline: Optional[str] = None
     salary: Optional[str] = None
     search_summary: str
-
+    
+    
 class AnalysisResponse(BaseModel):
-    matches: list[str]
-    missings: list[str]
-    ats_score: float
-    recommendations: str 
+    ats_score: float = None
+    selection_probability: float = None
+    recommendation: str = None
+    overall_analysis: str = None
+    strengths: list[str] = []
+    gaps: list[str] = []
+    improvements: list[str] = []
+    
     
 class MailState(TypedDict):
     receiver: str
